@@ -7,6 +7,6 @@ It's easy to overlook steps.  It's awful to help your friends remotely.  I wrote
 
 This script should hopefully help you quickly identify the source of networking problems and avoid overlooking anything obvious.   
 
-I wrote it on OSX 10.11.16 (el capitan).
+I wrote it on OSX 10.11.16 (el capitan).  It should work on a default OSX install.
 
 Send me a note if your life is measurably improved by this thing.  patrickmccanna@gmail.com
