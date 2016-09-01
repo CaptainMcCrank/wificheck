@@ -15,11 +15,17 @@ done
 
 echo "***********************************************************"
 echo " "
-echo "There are 3 things that need to work for internet.  You need a real IP address, you need to be able to ping the default gateway."
-echo "You need to have a DNS server, and you need to be able to route out to it"
+echo "There are 6 things that need to work for internet."
+echo "You need a real ip address.
+echo "You need to be able to ping the default gateway"
+echo "You need to have a DNS server
+echo "You need to be able to route to it"
+echo "You need DNS lookups to complete"
+echo "You need those DNS lookups to work quickly"
 echo "this script just fucking checks everything."
 echo ""
-
+echo "***********************************************************"
+echo " "
 ipaddress=$(ifconfig en0 | grep "inet " 2>&1)
 #	inet 192.168.43.223 netmask 0xffffff00 broadcast 192.168.43.255
 
