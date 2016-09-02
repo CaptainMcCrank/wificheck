@@ -61,34 +61,47 @@ echo ""
 echo "***********************************************************"
 echo "Ping tests for local network testing"
 echo "***********************************************************"
-echo "Ping response from default gateway"
-response=$(ping -c 1 $dgw | grep time=)
-if [ -z "$response" ]; then
+echo "Running Ping Tests..."
+
+DGWresponse=$(ping -c 1 $dgw | grep time=)
+NSresponse=$(ping -c 1 $ns | grep time=)
+GOOGresponse=$(ping -c 1 8.8.4.4 | grep time=)
+
+echo "Ping Tests complete!"
+
+if [ -z "$DGWresponse" ]; then
     echo -e "${RED}ERROR: couldn't ping the default gateway.${NC}  This might not be a big deal- firewalls can block ping requests." 
-    echo "If DNS pings don't work, you need to troubleshoot this first.  Do a DHCP renew and try again.  If that fails, reboot your router."
+    #echo "If DNS pings don't work, you need to troubleshoot this first.  Do a DHCP renew and try again.  If that fails, reboot your router."
 else
-    echo $response
+    echo $DGWresponse
+fi
+
+if [ -z "$DGWresponse" ] || [ -z "$GOOGresponse" ]; then
+    echo -e "${RED}ERROR: Couldn't ping the default gateway or google's external DNS server.${NC}  Your connectivity looks really broken."
+    echo "It could be you're on a public wifi with a captive portal.  Try logging into a non-private, non-TLS website from your browser (like verizon.com)."
+    echo "If you are on your home network, try rebooting the router & logging into it and checkign the error log.  If there's nothing obvious, you should call your ISP."
 fi
 
 echo "ping response from your nameserver($ns)"
-response=$(ping -c 1 $ns | grep time=)
-if [ -z "$response" ]; then
+
+if [ -z "$NSresponse" ]; then
     echo -e "${RED}ERROR: couldn't ping the nameserver.${NC}  If the nameserver is outside your home, you may want to try rebooting your cable/dsl modem."
 else
-    echo $response
+    echo $NSresponse
 fi
 echo "Ping response from google nameserver(8.8.4.4)"
-response=$(ping -c 1 8.8.4.4 | grep time=)
-if [ -z "$response" ]; then
+if [ -z "$GOOGresponse" ]; then
     echo -e "${RED}ERROR: couldn't ping the google's nameserver.${NC}  If your ISP DNS server & this one aren't reachable, the problem may be at your ISP"
 else
-    echo $response
+    echo $GOOGresponse
 fi
 echo ""
 echo "***********************************************************"
 echo "DNS tests:"
 echo "***********************************************************"
+
 localNSQueryTime=$(dig @$ns google.com | grep Query)
 googNSQueryTime=$(dig @8.8.4.4 google.com | grep Query)
+
 echo "Your preconfigured DNS ($ns) querytime:" $localNSQueryTime
 echo "Compare this to google's DNS (8.8.4.4) time:" $googNSQueryTime
