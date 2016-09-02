@@ -64,7 +64,8 @@ echo "***********************************************************"
 echo "Ping response from default gateway"
 response=$(ping -c 1 $dgw | grep time=)
 if [ -z "$response" ]; then
-    echo -e "${RED}ERROR: couldn't ping the default gateway.${NC}  Do a DHCP renew and try again.  If that fails, reboot your router."
+    echo -e "${RED}ERROR: couldn't ping the default gateway.${NC}  This might not be a big deal- firewalls can block ping requests." 
+    echo "If DNS pings don't work, you need to troubleshoot this first.  Do a DHCP renew and try again.  If that fails, reboot your router."
 else
     echo $response
 fi
